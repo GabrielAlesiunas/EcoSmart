@@ -17,15 +17,32 @@
             <h2>Informações do Sistema Solar</h2>
             <form id="solar-form">
                 <div class="input-group">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" onchange="atualizarTarifa()">
+                        <option value="SP">SP</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="cidade">Cidade:</label>
+                    <select id="cidade">
+                        <option value="">Selecione uma cidade</option>
+                        <option value="Cerquilho">Cerquilho</option>
+                        <option value="Iperó">Iperó</option>
+                        <option value="Sorocaba">Sorocaba</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="fornecedor">Fornecedor:</label>
+                    <input type="text" id="fornecedor" readonly>
+                </div>
+                <div class="input-group">
                     <label for="tipo-residencia">Tipo de Residência:</label>
                     <select id="tipo-residencia" required>
                         <option value="casa">Casa</option>
                         <option value="apartamento">Apartamento</option>
                     </select>
-                </div>
-                <div class="input-group">
-                    <label for="area-telhado">Área do Telhado (m²):</label>
-                    <input type="number" id="area-telhado" required>
                 </div>
                 <div class="input-group">
                     <label for="consumo">Consumo mensal (kWh):</label>
@@ -35,6 +52,10 @@
                     <label for="preco">Preço do kWh (R$):</label>
                     <input type="number" id="preco" name="preco" required step="0.01">
                 </div>
+                <div class="input-group">
+                    <label for="percentual-economia">Deseja Economizar Quanto do Consumo? (%):</label>
+                    <input type="number" id="percentual-economia" min="1" max="100" required>
+                </div>
                 <button type="submit">Calcular</button>
             </form>
         </section>
@@ -42,13 +63,13 @@
         <section class="result-section">
             <h2>Resultados</h2>
             <div id="resultados">
-                <!-- Os resultados serão preenchidos aqui pelo JavaScript -->
+                
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Solar Solutions</p>
+        <p>&copy; 2025 EcoSolar</p>
     </footer>
 
     <script src="script.js"></script>
