@@ -24,7 +24,7 @@ header {
 
 h1 {
     font-size: 2rem;
-    color: #2d6a4f;
+    color: #007bff;
 }
 
 main {
@@ -38,7 +38,8 @@ main {
 
 h2 {
     margin-bottom: 20px;
-    color: #2d6a4f;
+    color: #007bff;
+    text-align: center;
 }
 
 .input-group {
@@ -60,19 +61,24 @@ input, select {
 }
 
 button {
-    margin-top: 10px;
-    background-color: #2d6a4f;
+    margin-top: 20px;
+    background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 12px;
+    padding: 8px 0px;
     font-size: 1rem;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 150px;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 button:hover {
-    background-color: #1b4332;
+    background-color: #0056b3;
 }
 
 .result-section {
@@ -81,7 +87,7 @@ button:hover {
 
 .result-item {
     background-color: #e9f5ec;
-    border-left: 6px solid #40916c;
+    border-left: 6px solid #007bff;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 12px;
@@ -92,4 +98,36 @@ footer {
     text-align: center;
     font-size: 0.9rem;
     color: #666;
+}
+
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center; /* Centraliza o conteúdo do card */
+}
+
+.card p {
+    font-size: 16px; /* Tamanho padrão para os parágrafos */
+    color: #333; /* Cor do texto */
+    margin-bottom: 10px; /* Espaço entre os parágrafos */
+}
+
+.card p:first-of-type {
+    font-size: 20px; /* Tamanho maior para "INVESTIMENTO" */
+    font-weight: bold; /* Deixa o texto mais forte */
+    color: #007bff; /* Cor personalizada para o texto */
+    margin-bottom: 20px; /* Mais espaço abaixo */
+    text-transform: uppercase; /* Deixa o texto em letras maiúsculas */
+    letter-spacing: 1px; /* Espaçamento entre as letras */
+}
+
+.card i {
+    font-size: 50px; /* Tamanho maior do ícone */
+    color: #007bff; /* Cor do ícone */
+    margin-bottom: 15px; /* Espaço entre o ícone e o texto */
 }
