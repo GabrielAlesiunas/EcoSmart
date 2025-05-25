@@ -1,0 +1,12 @@
+Para conseguir rodar o projeto siga esses passos..
+
+1º: Instalar o Python na sua máquina através desse link https://www.python.org/downloads/
+2º: Executar o .exe e marcar a opção “Add Python to PATH” (muito importante).
+3º: Clique no botão Install Now
+4º: Abra o terminal para verificar se foi instalado corretamente e coloque esse código: python --version
+5º: Verifique se o pip (Gerenciador de Pacotes) foi instalado tambem: pip --version.
+6º: Se não foi instalado execute esse comando: python -m ensurepip --upgrade
+7º: Abra a pasta do projeto e coloque pip install flask matplotlib seaborn para instalar as bibliotecas usadas no projeto
+8º: Para criar o ambiente virtual coloque esse código python -m venv venv
+9º: Para ativar venv\Scripts\activate
+10º: Rode python app.py para executar o projeto

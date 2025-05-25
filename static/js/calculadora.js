@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Função para atualizar a tarifa e fornecedor
     function atualizarTarifa() {
-        const estado = document.getElementById('estado').value;
-        const cidade = document.getElementById('cidade').value;
+        const estado = document.getElementById('calculadora-estado').value;
+        const cidade = document.getElementById('calculadora-cidade').value;
 
         if (!cidade) {
-            document.getElementById('fornecedor').value = '';
-            document.getElementById('preco').value = '';
+            document.getElementById('calculadora-fornecedor').value = '';
+            document.getElementById('calculadora-preco').value = '';
             return;
         }
 
@@ -29,19 +28,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const dados = tarifasPorCidade[chave];
 
         if (dados) {
-            document.getElementById('fornecedor').value = dados.fornecedor;
-            document.getElementById('preco').value = dados.tarifa;
+            document.getElementById('calculadora-fornecedor').value = dados.fornecedor;
+            document.getElementById('calculadora-preco').value = dados.tarifa;
         } else {
-            document.getElementById('fornecedor').value = '';
-            document.getElementById('preco').value = '';
+            document.getElementById('calculadora-fornecedor').value = '';
+            document.getElementById('calculadora-preco').value = '';
         }
     }
 
-    // Atualiza a tarifa quando o estado ou cidade for alterado
-    document.getElementById('estado').addEventListener('change', atualizarTarifa);
-    document.getElementById('cidade').addEventListener('change', atualizarTarifa);
+    document.getElementById('calculadora-estado').addEventListener('change', atualizarTarifa);
+    document.getElementById('calculadora-cidade').addEventListener('change', atualizarTarifa);
 
-    // Função para escolher o painel solar adequado
     function escolherPainel(consumoNecessario) {
         const painéis = [
             { modelo: 'Painel 300W', potencia: 0.3, custo: 1500, area: 1.5 },
@@ -52,14 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let painelEscolhido = null;
         let energiaDiariaPorPainel;
-        
-        // Ordena os painéis de maior para menor potência
-        const painéisOrdenados = painéis.sort((a, b) => b.potencia - a.potencia);
 
-        // Agora, vamos tentar encontrar o painel adequado para o consumo
-        for (let painel of painéisOrdenados) {
-            energiaDiariaPorPainel = painel.potencia * 4.5; // Considerando irradiância média de 4.5 horas por dia
-            const energiaMensalPorPainel = energiaDiariaPorPainel * 30; // Geração mensal
+        for (let painel of painéis) {
+            energiaDiariaPorPainel = painel.potencia * 4.5;
+            const energiaMensalPorPainel = energiaDiariaPorPainel * 30;
 
             if (energiaMensalPorPainel >= consumoNecessario) {
                 painelEscolhido = painel;
@@ -67,68 +60,50 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // Se nenhum painel for encontrado, o código irá usar o painel com maior potência disponível
         if (!painelEscolhido) {
-            painelEscolhido = painéis[0]; // Usar o painel de maior potência
+            painelEscolhido = painéis[painéis.length - 1];
         }
 
         return painelEscolhido;
     }
 
-    // Calculando os resultados quando o formulário for enviado
-    document.querySelector('form').addEventListener('submit', function (event) {
+    document.querySelector('#calculadora-form').addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const consumo = parseFloat(document.getElementById('consumo').value);
-        const preco = parseFloat(document.getElementById('preco').value);
-        const percentualEconomia = parseFloat(document.getElementById('percentual-economia').value);
+        const consumo = parseFloat(document.getElementById('calculadora-consumo').value);
+        const preco = parseFloat(document.getElementById('calculadora-preco').value);
+        const percentualEconomia = parseFloat(document.getElementById('calculadora-percentual-economia').value);
 
-        const irradiacaoMedia = 4.5; // Média diária de sol em horas em SP
+        const irradiacaoMedia = 4.5;
 
         if (isNaN(consumo) || consumo <= 0 || isNaN(percentualEconomia) || percentualEconomia <= 0 || percentualEconomia > 100) {
             alert('Por favor, insira valores válidos.');
             return;
         }
 
-        // Quantidade de energia que o usuário quer compensar (em kWh)
         const energiaNecessaria = consumo * (percentualEconomia / 100);
-
-        // Escolher o painel solar adequado para a necessidade de energia
         const painelEscolhido = escolherPainel(energiaNecessaria);
 
-        // Verificar se o painel foi encontrado
         if (!painelEscolhido) {
             alert('Não foi possível encontrar um painel solar adequado para o consumo desejado.');
             return;
         }
 
-        // Cálculos baseados no painel escolhido
         const energiaDiariaPorPainel = painelEscolhido.potencia * irradiacaoMedia;
         const energiaMensalPorPainel = energiaDiariaPorPainel * 30;
         const quantidadePainel = Math.ceil(energiaNecessaria / energiaMensalPorPainel);
-
-        // Espaço necessário considerando o painel escolhido
         const espacoNecessario = quantidadePainel * painelEscolhido.area;
-
-        // Custo total estimado
         const custoTotal = quantidadePainel * painelEscolhido.custo;
-
-        // Sistema indicado
-        const potenciaTotal = quantidadePainel * painelEscolhido.potencia; // Potência total instalada em kW
-        const geracaoMensal = energiaMensalPorPainel * quantidadePainel; // Geração mensal total em kWh
-
-        // Informações sobre investimento
-        const economiaMensal = energiaNecessaria * preco; // economia mensal com a compensação
+        const potenciaTotal = quantidadePainel * painelEscolhido.potencia;
+        const geracaoMensal = energiaMensalPorPainel * quantidadePainel;
+        const economiaMensal = energiaNecessaria * preco;
         const economiaAnual = economiaMensal * 12;
-        const payback = custoTotal / economiaAnual; // tempo estimado de retorno em anos
+        const payback = custoTotal / economiaAnual;
+        const co2Evitado = energiaNecessaria * 0.1;
+        const arvoresEquivalentes = co2Evitado / 25;
+        const kmNaoRodados = co2Evitado / 0.3144;
 
-        // Estimativa Ambiental
-        const co2Evitado = energiaNecessaria * 0.084; // Em média, 1 kWh evita ~0.084 kg de CO₂
-        const arvoresEquivalentes = co2Evitado / 20; // 1 árvore absorve cerca de 20 kg de CO₂ por ano
-        const kmNaoRodados = co2Evitado / 0.2; // Aproximadamente, 1 km de carro gera ~0.2 kg de CO₂
-
-        // Exibição dos resultados
-        document.getElementById('resultados').innerHTML = `
+        document.getElementById('calculadora-resultados').innerHTML = `
             <div class="card">
                 <p>ESPECIFICAÇÕES TÉCNICAS</p>
                 <i class="fa-solid fa-solar-panel"></i>
@@ -138,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p><strong>Potência Total Instalada:</strong> ${potenciaTotal.toFixed(2)} kW.</p>
                 <p><strong>Geração Média Mensal:</strong> ${geracaoMensal.toFixed(2)} kWh.</p>
             </div>
-
             <div class="card">
                 <p>INVESTIMENTO</p>
                 <i class="fa-solid fa-money-check-dollar"></i>
@@ -146,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p><strong>Economia Anual Estimada:</strong> R$ ${economiaAnual.toFixed(2)}.</p>
                 <p><strong>Tempo Estimado de Retorno (Payback):</strong> ${payback.toFixed(1)} anos.</p>
             </div>
-
             <div class="card">
                 <p>SUSTENTABILIDADE</p>
                 <i class="fa-solid fa-seedling"></i>
@@ -154,5 +127,49 @@ document.addEventListener('DOMContentLoaded', function () {
                 <p><strong>Equivalente a:</strong> ${arvoresEquivalentes.toFixed(1)} árvores plantadas / ${kmNaoRodados.toFixed(1)} km não rodados.</p>
             </div>
         `;
+
+        // Enviar dados dos cards para o backend Flask
+        const payload = {
+            painel: painelEscolhido.modelo,
+            quantidadePainel: quantidadePainel,
+            espaco: espacoNecessario,
+            consumo: consumo,
+            potenciaTotal,
+            geracaoMensal,
+            custoTotal,
+            economiaAnual,
+            payback,
+            co2Evitado,
+            arvores: arvoresEquivalentes,
+            km: kmNaoRodados
+        };
+
+        fetch('/calcular', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Transformar resposta em JSON para acessar os dados
+                } else {
+                    throw new Error('Erro ao gerar gráfico.');
+                }
+            })
+            .then(data => {
+                console.log('Dados dos cards enviados com sucesso para o backend.');
+
+                // Agora sim acessa os caminhos dos gráficos dentro de data
+                document.getElementById('graf1').src = data.graficoInvestimento + '?' + new Date().getTime();
+                document.getElementById('graf2').src = data.graficoSustentabilidade + '?' + new Date().getTime();
+                document.getElementById('graf3').src = data.graficoEnergia + '?' + new Date().getTime();
+                document.getElementById('graficos-container').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Erro de conexão com o servidor:', error);
+            });
+
     });
 });
